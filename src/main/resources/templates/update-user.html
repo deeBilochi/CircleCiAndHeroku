@@ -1,0 +1,11 @@
+<form th:action="@{/update/{id}(id=${user.id})}"
+      th:object="${user}"
+      method="post" xmlns:th="http://www.w3.org/1999/xhtml">
+    <label for="name">Name</label>
+    <input type="text" th:field="*{name}" id="name" placeholder="Name">
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+    <label for="price">Age</label>
+    <input type="number" th:field="*{age}" id="price" placeholder="Age">
+    <span th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></span>
+    <input type="submit" value="Update User">
+</form>

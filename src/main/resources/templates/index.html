@@ -1,18 +1,19 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
->
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<section >
-    <div th:text="${someOtherText}"></div>
-    <div>
-        <ul th:each="user : ${users}">
-            <li th:if="${user.getAge()} > 50 "><span th:text="${user.getName()}"></span> <span th:text="${user.getAge()} + 110"></span></li>
-        </ul>
-    </div>
-</section>
-</body>
-</html>
+<div xmlns:th="http://www.w3.org/1999/xhtml">
+    <h2>Users</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.age}"></td>
+            <td><a th:href="@{/edit/{id}(id=${user.id})}">Edit</a></td>
+            <td><a th:href="@{/delete/{id}(id=${user.id})}">Delete</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
