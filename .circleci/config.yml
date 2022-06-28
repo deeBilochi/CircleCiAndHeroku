@@ -5,7 +5,18 @@ workflows:
   build_and_test:
     jobs:
       - build
-      - test
+      - test:
+          requires:
+            - build
+      - package:
+          requires:
+            - build
+            - test
+      - deploy:
+          requires:
+            - build
+            - test
+            - package
 
 jobs:
   build:
@@ -27,3 +38,34 @@ jobs:
       - run: ./gradlew test
       - store_test_results:
           path: build/test-results/
+      - store_artifacts:
+          path: build/reports/
+  package:
+    docker:
+      - image: docker:dind
+    steps:
+      - setup_remote_docker:
+          version: 19.03.13
+      - checkout
+      - attach_workspace:
+          at: ./
+      - run: docker build --iidfile image.txt -f Dockerfile . -t registry.heroku.com/user-service11/web:${CIRCLE_SHA1}
+      - run: docker login --username=_ --password=$HEROKU_TOKEN registry.heroku.com
+      - run: docker push registry.heroku.com/user-service11/web:${CIRCLE_SHA1}
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - image.txt
+  deploy:
+    docker:
+      - image: docker:dind
+    steps:
+      - setup_remote_docker:
+          version: 19.03.13
+      - attach_workspace:
+          at: ./
+      - run: apk add --no-cache curl
+      - run:
+          name: "Patch the container hosted in heroku"
+          command: |
+            curl -X PATCH https://api.heroku.com/apps/user-service11/formation --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer ${HEROKU_TOKEN}" --data '{ "updates": [ { "type": "web", "docker_image": "'$(cat image.txt)'" } ] }'
