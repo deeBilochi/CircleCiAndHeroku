@@ -15,14 +15,14 @@ public class SpringDemoApplication {
 		SpringApplication.run(SpringDemoApplication.class, args);
 	}
 
-	@Bean
-	public CommandLineRunner setup(UserRepository repository) {
-		return (args) -> {
-			repository.save(new User("A", 10));
-			repository.save(new User("B", 11));
-			repository.save(new User("C", 12));
-			repository.save(new User("D", 13));
-		};
-	}
+//	@Bean
+//	public CommandLineRunner setup(UserRepository repository) {
+//		return (args) -> {
+//			repository.save(new User("A", 10));
+//			repository.save(new User("B", 11));
+//			repository.save(new User("C", 12));
+//			repository.save(new User("D", 13));
+//		};
+//	}
 
 }
