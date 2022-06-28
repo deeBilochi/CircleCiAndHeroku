@@ -17,12 +17,12 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest
+//@WebMvcTest
 class UserControllerTest {
-    @MockBean
-    private UserService userService;
-    @Autowired
-    private MockMvc mockMvc;
+//    @MockBean
+//    private UserService userService;
+//    @Autowired
+//    private MockMvc mockMvc;
 
     @Test
     void setup(){
